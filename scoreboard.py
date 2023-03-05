@@ -3,6 +3,7 @@ from turtle import Turtle
 ALIGNMENT = "center"
 FONT = ("Courier", 24, "normal")
 GAME_OVER = "Game Over"
+HIGH_SCORE = "data.txt"
 
 
 class Scoreboard(Turtle):
@@ -11,7 +12,9 @@ class Scoreboard(Turtle):
         self.penup()
         self.goto(0, 260)
         self.score = 0
-        self.high_score = 0
+        with open(HIGH_SCORE, "r") as data:
+            self.high_score = data.read()
+            data.close()
         self.color("white")
         self.hideturtle()
         self.update_scoreboard()
@@ -31,7 +34,9 @@ class Scoreboard(Turtle):
     #     self.write(GAME_OVER, False, align=ALIGNMENT, font=FONT)
 
     def reset(self):
-        if self.score > self.high_score:
+        if self.score > int(self.high_score):
             self.high_score = self.score
+            with open(HIGH_SCORE, "w") as data:
+                data.write(str(self.high_score))
         self.score = 0
         self.update_scoreboard()
